@@ -66,7 +66,8 @@ Replace code before compiling:
 
  
 [Documentation on Google Closure Compiler's request parameters can be found here](https://developers.google.com/closure/compiler/docs/api-ref).
-  By default, GccRest does not overwrite the default settings of Google Closure Compiler.
+
+*By default, GccRest does not overwrite the default settings of Google Closure Compiler.*
 
 Set a Google Closure COmpiuler request parameter:
 
