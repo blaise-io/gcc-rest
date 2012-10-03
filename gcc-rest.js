@@ -168,9 +168,9 @@ GccRest.prototype = {
         });
         request.end(data);
 
-        // For ease of use, GccRest exports an instance. Node.js caches exports,
-        // so we delete it again to prevent it from return a polluted instance
-        // when GccRest is called multiple times.
+        // For ease of use, GccRest exports an instance. Node.js caches exports.
+        // We flush the cache here to prevent GccRest from returning a polluted
+        // instance, in case GccRest is called multiple times.
         try {
             delete require.cache[__filename];
         } catch(err){}
