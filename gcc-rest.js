@@ -167,6 +167,13 @@ GccRest.prototype = {
             console.error('Request error', e);
         });
         request.end(data);
+
+        // For ease of use, GccRest exports an instance. Node.js caches exports,
+        // so we delete it again to prevent it from return a polluted instance
+        // when GccRest is called multiple times.
+        try {
+            delete require.cache[__filename];
+        } catch(err){}
     },
 
     /**
