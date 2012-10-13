@@ -1,10 +1,10 @@
 # GccRest
 A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.
 
-
 ## How to Install
-`npm install gcc-rest`
-
+```shell
+npm install gcc-rest
+```
 
 ## How to use
 
@@ -12,103 +12,137 @@ A node.js module that allows you to easily compile Javascript code using Google 
 
 Compile file1.js and file2.js and write it to compiled.js
 
-    var gcc = require('gcc-rest');
-    gcc.addFiles('path/to/file1.js', 'path/to/file2.js');
-    gcc.output('/path/to/compiled.js');
+```js
+var gcc = require('gcc-rest');
+gcc.addFiles('/path/to/file1.js', '/path/to/file2.js');
+gcc.output('/path/to/compiled.js');
+```
 
 If you're into chaining; this does the same:
 
-    require('gcc-rest')
-       .addFiles('path/to/file1.js', 'path/to/file2.js')
-       .output('/path/to/compiled.js');
-
-Advanced example:
-
-    var gcc = require('gcc-rest');
-    
-    gcc.params({
-        output_info       : ['compiled_code', 'errors', 'warnings', 'statistics'],
-        language          : 'ECMASCRIPT5_STRICT',
-        compilation_level : 'ADVANCED_OPTIMIZATIONS',
-        warning_level     : 'VERBOSE'
-    });
-    
-    gcc.addFiles(
-        'source/js/config.js',
-        'source/js/utils.js',
-        'source/js/main.js'
-    );
-    
-    gcc.replace(/'use strict';/g, '');
-    gcc.output('compiled/compiled.js');
+```js
+require('gcc-rest')
+   .addFiles('/path/to/file1.js', '/path/to/file2.js')
+   .output('/path/to/compiled.js');
+```
 
 *Closing methods that trigger compiling cannot be chained. These methods are `output`, `compile` and `compilePassJson`*
+
+An advanced example:
+
+```js
+// Load GccRest module
+var gcc = require('gcc-rest');
+
+// Set Closure Compiler parameters
+gcc.params({
+    output_info      : ['compiled_code', 'errors', 'warnings', 'statistics'],
+    language         : 'ECMASCRIPT5_STRICT',
+    compilation_level: 'ADVANCED_OPTIMIZATIONS',
+    warning_level    : 'VERBOSE'
+});
+
+// Add files that should be compiled
+gcc.addFiles(
+    'js/config.js',
+    'js/utils.js',
+    'js/main.js'
+);
+
+// Replace code before compiling
+gcc.replace(/'use strict';/g, '');
+
+// Compile and write output to compiled.js
+gcc.output('compiled/compiled.js');
+```
 
 ### Adding code that should be compiled
 
 Add a single file:
 
-    gcc.addFile('path/to/file.js');
+```js
+gcc.addFile('/path/to/file.js');
+```
 
 Add multiple files:
 
-    gcc.addFiles('path/to/file1.js', 'path/to/file2.js', ...);
+```js
+gcc.addFiles('/path/to/file1.js', '/path/to/file2.js', ...);
+```
 
 Manually add a snippet of Javascript:
 
-    gcc.addCode('alert("The crocodile must be green");');
+```js
+gcc.addCode('alert("The crocodile must be green");');
+```
 
 Replace code before compiling:
 
-    gcc.replace(/"console\.log\(.*\);"/g, ''); // Removes all console.log statements
+```js
+gcc.replace(/"console\.log\(.*\);"/g, ''); // Removes all console.log statements
+```
 
-### Compiler settings
+### Compiler request parameters
 
- 
-[Documentation on Google Closure Compiler's request parameters can be found here](https://developers.google.com/closure/compiler/docs/api-ref).
+[Documentation on Google Closure Compiler's request parameters can be found here](https://developers.google.com/closure/compiler/docs/api-ref). 
+The [additional web service options](http://code.google.com/p/closure-compiler/wiki/AdditionalWebserviceOptions) are also supported. 
+Unsupported parameters will print a warning. 
+By default, GccRest uses Google Closure Compiler's default settings.
 
-*By default, GccRest does not overwrite the default settings of Google Closure Compiler.*
+Set a Google Closure Compiler request parameter:
 
-Set a Google Closure COmpiuler request parameter:
-
-    gcc.param('warning_level', 'VERBOSE');
+```js
+gcc.param('warning_level', 'VERBOSE');
+```
 
 Or set multiple request parameters at once:
 
-    gcc.params({
-        output_info      : ['compiled_code', 'errors', 'warnings', 'statistics'],
-        compilation_level: 'ADVANCED_OPTIMIZATIONS',
-        ...
-    });
+```js
+gcc.params({
+    language     : 'ECMASCRIPT5_STRICT',
+    warning_level: 'VERBOSE'
+});
+```
 
 ### Handling the compiled output
 
 Output to a file:
 
-    gcc.output('/path/to/compiled.js');
+```js
+gcc.output('/path/to/compiled.js');
+```
 
 You may also pass the compiled source to a callback function. The compiled source is passed as the first parameter.
 
 Use a callback function by supplying a function reference:
 
-    gcc.compile(console.log);
+```js
+gcc.compile(console.log);
+```
 
-Or use an anonymous function:
+Or an anonymous function:
 
-    gcc.compile(function(compiled) {
-        require('fs').writeFile('path/to/myfile.js', compiled);
-    });
+```js
+gcc.compile(function(compiled) {
+    require('fs').writeFile('path/to/myfile.js', compiled);
+});
+```
 
-Access the unmodified Json response from Google Closure Compiler:
+Access the unmodified Json response from Google Closure Compiler by calling `compilePassJson()`:
 
-    gcc.compilePassJson(function(json) {
-        // json contains objects like compiledCode, errors, warnings, statistics
-        // see output_format > json at https://developers.google.com/closure/compiler/docs/api-ref
-    });
+```js
+gcc.compilePassJson(function(json) {
+    console.log(json);
+    // json contains objects like compiledCode, errors, warnings, statistics
+    // see output_format > json at https://developers.google.com/closure/compiler/docs/api-ref
+});
+```
 
 Prefix the compiled source with a header that will not be affected by Gooogle Closure Compiler's comment-eater:
 
-    gcc.header('This file was compiled using Google Closure Compiler\n');
+```js
+gcc.header('This file was compiled using Google Closure Compiler\n');
+```
 
 ## License
 GccRest is released under the MIT License.
