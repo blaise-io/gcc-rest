@@ -3,7 +3,7 @@
 
 // MIT LICENSE
 // Copyright (c) 2012 Blaise Kal
-// GccRest is released under the MIT License.
+// gcc-rest is released under the MIT License.
 
 
 var fs = require('fs');
