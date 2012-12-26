@@ -1,4 +1,4 @@
-# GccRest
+# gcc-rest
 A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.
 
 ## How to Install
@@ -145,4 +145,4 @@ gcc.header('This file was compiled using Google Closure Compiler\n');
 ```
 
 ## License
-GccRest is released under the MIT License.
+gcc-rest is released under the MIT License.
