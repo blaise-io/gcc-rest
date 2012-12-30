@@ -31,7 +31,7 @@ require('gcc-rest')
 An advanced example:
 
 ```js
-// Load GccRest module
+// Load gcc-rest module
 var gcc = require('gcc-rest');
 
 // Set Closure Compiler parameters
@@ -84,10 +84,9 @@ gcc.replace(/"console\.log\(.*\);"/g, ''); // Removes all console.log statements
 
 ### Compiler request parameters
 
-[Documentation on Google Closure Compiler's request parameters can be found here](https://developers.google.com/closure/compiler/docs/api-ref). 
-The [additional web service options](http://code.google.com/p/closure-compiler/wiki/AdditionalWebserviceOptions) are also supported. 
-Unsupported parameters will print a warning. 
-By default, GccRest uses Google Closure Compiler's default settings.
+[Documentation on Google Closure Compiler's request parameters can be found here](https://developers.google.com/closure/compiler/docs/api-ref).
+The [additional web service options](http://code.google.com/p/closure-compiler/wiki/AdditionalWebserviceOptions) are also supported.
+Unsupported parameters will print a warning. gcc-rest does not overwrite Google Closure Compiler's default settings.
 
 Set a Google Closure Compiler request parameter:
 
@@ -99,8 +98,9 @@ Or set multiple request parameters at once:
 
 ```js
 gcc.params({
-    language     : 'ECMASCRIPT5_STRICT',
-    warning_level: 'VERBOSE'
+    language                  : 'ECMASCRIPT5_STRICT',
+    warning_level             : 'VERBOSE',
+    use_types_for_optimization: 'true'
 });
 ```
 
@@ -143,6 +143,12 @@ Prefix the compiled source with a header that will not be affected by Gooogle Cl
 ```js
 gcc.header('This file was compiled using Google Closure Compiler\n');
 ```
+
+## Update history
+
+ * 2012-12-30: v0.1.2 Add support for use_types_for_optimization
+ * 2012-10-02: v0.0.3 Prevent module cache
+ * 2012-10-02: v0.0.1 Initial release
 
 ## License
 gcc-rest is released under the MIT License.

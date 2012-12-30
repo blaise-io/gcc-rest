@@ -36,9 +36,9 @@ GccRest.prototype = {
     },
 
     _supportedPostParams: [
-        'js_code', 'compilation_level', 'output_info', 'js_externs',
-        'externs_url', 'exclude_default_externs', 'formatting',
-        'use_closure_library', 'warning_level', 'language'
+        'compilation_level', 'exclude_default_externs', 'externs_url',
+        'formatting', 'js_code', 'js_externs', 'language', 'output_info',
+        'use_closure_library', 'use_types_for_optimization', 'warning_level'
     ],
 
     /**
