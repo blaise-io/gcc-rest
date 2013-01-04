@@ -1,7 +1,6 @@
-/*jshint globalstrict:true,es5:true*/
+/*jshint globalstrict:true, node:true, es5:true*/
 'use strict';
 
-// MIT LICENSE
 // Copyright (c) 2012 Blaise Kal
 // gcc-rest is released under the MIT License.
 
@@ -36,7 +35,7 @@ GccRest.prototype = {
     },
 
     _supportedPostParams: [
-        'compilation_level', 'exclude_default_externs', 'externs_url',
+        'compilation_level', 'debug', 'exclude_default_externs', 'externs_url',
         'formatting', 'js_code', 'js_externs', 'language', 'output_info',
         'use_closure_library', 'use_types_for_optimization', 'warning_level'
     ],
@@ -93,7 +92,7 @@ GccRest.prototype = {
 
     /**
      * Add multiple files to the list of files to be compiled.
-     * @param {string...} varArgs
+     * @param {...string} varArgs
      * @return {GccRest}
      */
     addFiles: function(varArgs) {

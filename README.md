@@ -141,12 +141,13 @@ gcc.compilePassJson(function(json) {
 Prefix the compiled source with a header that will not be affected by Gooogle Closure Compiler's comment-eater:
 
 ```js
-gcc.header('This file was compiled using Google Closure Compiler\n');
+gcc.header('// This file was compiled using Google Closure Compiler\n');
 ```
 
 ## Update history
 
- * 2012-12-30: v0.1.2 Add support for use_types_for_optimization
+ * 2013-01-05: v0.1.3 Add support for debug parameter
+ * 2012-12-30: v0.1.2 Add support for use_types_for_optimization parameter
  * 2012-10-02: v0.0.3 Prevent module cache
  * 2012-10-02: v0.0.1 Initial release
 
