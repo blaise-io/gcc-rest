@@ -146,6 +146,7 @@ gcc.header('// This file was compiled using Google Closure Compiler\n');
 
 ## Update history
 
+ * 2013-01-12: v0.1.4 Fix issue where no header prepends "undefined" to output
  * 2013-01-05: v0.1.3 Add support for debug parameter
  * 2012-12-30: v0.1.2 Add support for use_types_for_optimization parameter
  * 2012-10-02: v0.0.3 Prevent module cache

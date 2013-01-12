@@ -19,6 +19,8 @@ function GccRest() {}
 
 GccRest.prototype = {
 
+    _header: '',
+
     _reqParam: {
         js_code      : '',
         output_info  : ['compiled_code'],
