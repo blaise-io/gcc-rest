@@ -82,6 +82,21 @@ GccRest.prototype = {
     },
 
     /**
+     * @param {string} dir
+     * @param {Array.<string>} exclude
+     */
+    addDir: function(dir, exclude) {
+        var files = fs.readdirSync(dir);
+        dir = fs.realpathSync(dir) + '/';
+        exclude = exclude || [];
+        for (var i = 0, m = files.length; i < m; i++) {
+            if (-1 === exclude.indexOf(files[i]) && /\.js$/i.test(files[i])) {
+                this.addFile(dir + files[i]);
+            }
+        }
+    },
+
+    /**
      * Add a single file to the list of files to be compiled.
      * @param {string} file
      * @return {GccRest}

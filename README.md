@@ -70,6 +70,14 @@ Add multiple files:
 gcc.addFiles('/path/to/file1.js', '/path/to/file2.js', ...);
 ```
 
+Add a directory of Javascript files:
+
+```js
+// Use the optional second argument to pass an array of files
+// that should be excluded when scanning the dir.
+gcc.addDir('/path/to/dir', ['exclude1.js', 'exclude2.js']);
+```
+
 Manually add a snippet of Javascript:
 
 ```js
@@ -146,6 +154,7 @@ gcc.header('// This file was compiled using Google Closure Compiler\n');
 
 ## Update history
 
+ * 2013-02-02: v0.1.5 Add `addDir` method
  * 2013-01-12: v0.1.4 Fix issue where no header prepends "undefined" to output
  * 2013-01-05: v0.1.3 Add support for debug parameter
  * 2012-12-30: v0.1.2 Add support for use_types_for_optimization parameter
