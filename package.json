@@ -2,7 +2,7 @@
     "name"       : "gcc-rest",
     "description": "A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.",
     "keywords"   : ["closure compiler", "gcc", "rest", "compile"],
-    "version"    : "0.1.5",
+    "version"    : "0.1.6",
     "homepage"   : "https://github.com/blaise-io/gcc-rest.git",
     "bugs"       : "https://github.com/blaise-io/gcc-rest/issues",
     "files"      : ["gcc-rest.js", "LICENSE", "README.md"],

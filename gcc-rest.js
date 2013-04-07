@@ -1,7 +1,7 @@
 /*jshint globalstrict:true, node:true, es5:true*/
 'use strict';
 
-// Copyright (c) 2012 Blaise Kal
+// Copyright (c) 2013 Blaise Kal
 // gcc-rest is released under the MIT License.
 
 
@@ -94,6 +94,7 @@ GccRest.prototype = {
                 this.addFile(dir + files[i]);
             }
         }
+        return this;
     },
 
     /**

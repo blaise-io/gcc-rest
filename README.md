@@ -26,7 +26,7 @@ require('gcc-rest')
    .output('/path/to/compiled.js');
 ```
 
-*Closing methods that trigger compiling cannot be chained. These methods are `output`, `compile` and `compilePassJson`*
+*Note: Closing methods that perform compiling (`output`, `compile` and `compilePassJson`) cannot be chained.
 
 An advanced example:
 
@@ -146,7 +146,7 @@ gcc.compilePassJson(function(json) {
 });
 ```
 
-Prefix the compiled source with a header that will not be affected by Gooogle Closure Compiler's comment-eater:
+Prepend the compiled source with a header:
 
 ```js
 gcc.header('// This file was compiled using Google Closure Compiler\n');
@@ -154,6 +154,7 @@ gcc.header('// This file was compiled using Google Closure Compiler\n');
 
 ## Update history
 
+ * 2013-04-07: v0.1.6 Allow chaining after the `addDir` method
  * 2013-02-02: v0.1.5 Add `addDir` method
  * 2013-01-12: v0.1.4 Fix issue where no header prepends "undefined" to output
  * 2013-01-05: v0.1.3 Add support for debug parameter
