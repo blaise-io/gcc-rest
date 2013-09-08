@@ -3,7 +3,7 @@ A node.js module that allows you to easily compile Javascript code using Google 
 
 [This library is also available as a Grunt plugin](https://github.com/blaise-io/grunt-gcc-rest).
 
-## How to Install
+## How to install
 ```shell
 npm install gcc-rest
 ```
