@@ -1,9 +1,6 @@
-/*jshint globalstrict:true, node:true, es5:true*/
-'use strict';
-
 // Copyright (c) 2013 Blaise Kal
 // gcc-rest is released under the MIT License.
-
+'use strict';
 
 var fs = require('fs');
 var http = require('http');
@@ -43,6 +40,15 @@ GccRest.prototype = {
     ],
 
     /**
+     * Allow overwriting logging with own callbacks.
+     */
+    console: {
+        info: console.info,
+        warn: console.warn,
+        error: console.error
+    },
+
+    /**
      * Set a Google Closure Compiler request parameter.
      * @param {string} setting
      * @param {string|Array} value
@@ -50,7 +56,7 @@ GccRest.prototype = {
      */
     param: function(setting, value) {
         if (-1 === this._supportedPostParams.indexOf(setting)) {
-            console.error('Parameter unsupported, may cause error:', setting);
+            this.console.error('Parameter unsupported, may cause error:', setting);
         }
         this._reqParam[setting] = value;
         return this;
@@ -181,7 +187,7 @@ GccRest.prototype = {
 
         request = http.request(this._closureEndpoint, this._handleResponse.bind(this));
         request.on('error', function(e) {
-            console.error('Request error', e);
+            this.console.error('Request error', e);
         });
         request.end(data);
 
@@ -233,8 +239,9 @@ GccRest.prototype = {
      */
     _handleOutput: function(json) {
         if (!json.compiledCode) {
-            console.error('No compiled code to output!');
+            this.console.error('No compiled code to output!');
         } else {
+            json.compiledCode = this._header + json.compiledCode;
 
             if (this.file) {
                 this._writeOutputTofile(json.compiledCode);
@@ -245,7 +252,7 @@ GccRest.prototype = {
             }
 
             if (!this.file && !this.callback) {
-                console.log('Code:', json.compiledCode);
+                this.console.log('Code:', json.compiledCode);
             }
         }
     },
@@ -256,11 +263,11 @@ GccRest.prototype = {
      * @private
      */
     _responseFail: function(response) {
-        console.error('Response went wrong!');
-        console.error('Status', response.statusCode);
-        console.error('Headers', response.headers);
+        this.console.error('Response went wrong!');
+        this.console.error('Status', response.statusCode);
+        this.console.error('Headers', response.headers);
         response.on('data', function(chunk) {
-            console.info('Body', chunk);
+            this.console.info('Body', chunk);
         });
     },
 
@@ -274,11 +281,11 @@ GccRest.prototype = {
         var stats, shaved, kb;
 
         if (json.warnings) {
-            console.log('Warnings:', json.warnings);
+            this.console.log('Warnings:', json.warnings);
         }
 
         if (json.errors) {
-            console.error('Errors:', json.errors);
+            this.console.error('Errors:', json.errors);
         }
 
         if (json.statistics) {
@@ -289,12 +296,12 @@ GccRest.prototype = {
                 return Math.round(bytes / 10.24) / 100 + ' KB';
             };
 
-            console.info();
-            console.info('      Original', kb(stats.originalSize));
-            console.info('    Compressed', kb(stats.compressedSize));
-            console.info('     + GZipped', kb(stats.compressedGzipSize));
-            console.info('       Reduced', shaved + '%');
-            console.info();
+            this.console.info();
+            this.console.info('      Original', kb(stats.originalSize));
+            this.console.info('    Compressed', kb(stats.compressedSize));
+            this.console.info('     + GZipped', kb(stats.compressedGzipSize));
+            this.console.info('       Reduced', shaved + '%');
+            this.console.info();
         }
     },
 
@@ -304,8 +311,7 @@ GccRest.prototype = {
      * @private
      */
     _writeOutputTofile: function(code) {
-        var output = this._header + code;
-        fs.writeFile(this.file, output, this._writeFileResult.bind(this));
+        fs.writeFile(this.file, code, this._writeFileResult.bind(this));
     },
 
     /**
@@ -316,9 +322,9 @@ GccRest.prototype = {
     _writeFileResult: function(err) {
         var file = fs.realpathSync(this.file);
         if (!err) {
-            console.info('Compiled code saved to', file);
+            this.console.info('Compiled code saved to', file);
         } else {
-            console.info('Saving code failed to', file);
+            this.console.info('Saving code failed to', file);
         }
     }
 

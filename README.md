@@ -1,6 +1,8 @@
 # gcc-rest
 A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.
 
+[This library is also available as a Grunt plugin](https://github.com/blaise-io/grunt-gcc-rest).
+
 ## How to Install
 ```shell
 npm install gcc-rest
@@ -26,7 +28,7 @@ require('gcc-rest')
    .output('/path/to/compiled.js');
 ```
 
-*Note: Closing methods that perform compiling (`output`, `compile` and `compilePassJson`) cannot be chained.
+*Note:* Closing methods that perform compiling (`output`, `compile` and `compilePassJson`) cannot be chained.
 
 An advanced example:
 
@@ -152,8 +154,25 @@ Prepend the compiled source with a header:
 gcc.header('// This file was compiled using Google Closure Compiler\n');
 ```
 
+## Custom logging
+
+By default, gcc-rest uses the `console` object for logging. If you want, you can
+overwrite `gcc.console.info`, `gcc.console.warn` and `gcc.console.error` with
+your own functions. Example:
+
+```js
+gcc.console.error = function() {
+    fs.appendFile('error.log', arguments.join(', '));
+}
+```
+
+## Unit testing
+
+Run `npm test`.
+
 ## Update history
 
+ * 2013-08-08: v0.2.0 Add tests, travis, allow overwriting console
  * 2013-04-07: v0.1.6 Allow chaining after the `addDir` method
  * 2013-02-02: v0.1.5 Add `addDir` method
  * 2013-01-12: v0.1.4 Fix issue where no header prepends "undefined" to output
