@@ -174,7 +174,7 @@ gcc.console.error = function() {
 
 ## Update history
 
- * 2013-08-08: v0.2.0 Add tests, travis, allow overwriting console
+ * 2013-09-08: v0.2.0 Add tests, travis, allow overwriting console
  * 2013-04-07: v0.1.6 Allow chaining after the `addDir` method
  * 2013-02-02: v0.1.5 Add `addDir` method
  * 2013-01-12: v0.1.4 Fix issue where no header prepends "undefined" to output
