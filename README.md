@@ -1,9 +1,7 @@
-# gcc-rest
+# gcc-rest [![Build Status](https://travis-ci.org/blaise-io/gcc-rest.png?branch=master)](https://travis-ci.org/blaise-io/gcc-rest)
 A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.
 
 [This library is also available as a Grunt plugin](https://github.com/blaise-io/grunt-gcc-rest).
-
-[![Build Status](https://travis-ci.org/blaise-io/gcc-rest.png?branch=master)](https://travis-ci.org/blaise-io/gcc-rest)
 
 ## How to Install
 ```shell
