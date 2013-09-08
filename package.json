@@ -1,6 +1,6 @@
 {
     "name"       : "gcc-rest",
-    "description": "A node.js module that allows you to easily compile Javascript code using Google Closure Compiler's REST API.",
+    "description": "A node.js module for compiling JavaScript code using Google Closure Compiler's REST API.",
     "keywords"   : ["closure compiler", "gcc", "rest", "compile"],
     "version"    : "0.2.0",
     "license"    : "MIT",
