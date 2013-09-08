@@ -168,7 +168,9 @@ gcc.console.error = function() {
 
 ## Unit testing
 
-Run `npm test`.
+1. Clone from GitHub
+1. Run `npm install` to install the Mocha test framework
+1. Run `npm test`
 
 ## Update history
 
