@@ -174,6 +174,7 @@ gcc.console.error = function() {
 
 ## Update history
 
+ * 2013-12-01: v0.2.3 Consistency in error/warning logging
  * 2013-08-08: v0.2.0 Add tests, travis, allow overwriting console
  * 2013-04-07: v0.1.6 Allow chaining after the `addDir` method
  * 2013-02-02: v0.1.5 Add `addDir` method

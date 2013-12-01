@@ -252,7 +252,7 @@ GccRest.prototype = {
             }
 
             if (!this.file && !this.callback) {
-                this.console.log('Code:', json.compiledCode);
+                this.console.info('Code:', json.compiledCode);
             }
         }
     },
@@ -263,12 +263,12 @@ GccRest.prototype = {
      * @private
      */
     _responseFail: function(response) {
-        this.console.error('Response went wrong!');
+        this.console.error('Server responded with error:');
         this.console.error('Status', response.statusCode);
         this.console.error('Headers', response.headers);
         response.on('data', function(chunk) {
             this.console.info('Body', chunk);
-        });
+        }.bind(this));
     },
 
     /**
@@ -280,13 +280,8 @@ GccRest.prototype = {
     _showOutputInfo: function(json) {
         var stats, shaved, kb;
 
-        if (json.warnings) {
-            this.console.log('Warnings:', json.warnings);
-        }
-
-        if (json.errors) {
-            this.console.error('Errors:', json.errors);
-        }
+        this._showOutputDebug(json.warnings, 'warning', this.console.warn);
+        this._showOutputDebug(json.errors, 'error', this.console.error);
 
         if (json.statistics) {
 
@@ -302,6 +297,24 @@ GccRest.prototype = {
             this.console.info('     + GZipped', kb(stats.compressedGzipSize));
             this.console.info('       Reduced', shaved + '%');
             this.console.info();
+        }
+    },
+
+    /**
+     * @param {Array.<Object>} objects
+     * @param {string} key
+     * @param {Function} logFn
+     * @private
+     */
+    _showOutputDebug: function(objects, key, logFn) {
+        for (var k in objects || {}) {
+            if (objects.hasOwnProperty(k)) {
+                var obj = objects[k];
+                logFn(key.toUpperCase() + ': ' + obj.type + ' at ' +
+                      obj.lineno + ':' + obj.charno);
+                logFn(obj[key]);
+                logFn(obj.line);
+            }
         }
     },
 
