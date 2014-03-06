@@ -54,8 +54,11 @@ gcc.addFiles(
 // Replace code before compiling
 gcc.replace(/'use strict';/g, '');
 
-// Compile and write output to compiled.js
-gcc.output('compiled/compiled.js');
+// Compile and write output to compiled.js,
+// Handle errors when something goes wrong.
+gcc.output('compiled/compiled.js', function(errorType, errorDetails) {
+    console.error('Something went wrong:', errorType, errorDetails);
+});
 ```
 
 ### Adding code that should be compiled
@@ -127,7 +130,7 @@ You may also pass the compiled source to a callback function. The compiled sourc
 Use a callback function by supplying a function reference:
 
 ```js
-gcc.compile(console.log, console.error);
+gcc.compile(console.log);
 ```
 
 Or an anonymous function:
@@ -148,21 +151,34 @@ gcc.compilePassJson(function(json) {
 });
 ```
 
-Handle errors by supplying an error handling function as the second argument.
-The error handling function has two parameters, `errorType` and `errorDetails`.
+Prepend the compiled source with a header:
 
-Possible `errorType`'s:
+```js
+gcc.header('// This file was compiled using Google Closure Compiler\n');
+```
+
+### Handling errors
+
+Handle errors by supplying an error handling function to the second argument of `output`, `compile` or `compilePassJson`.
+This function will be called when something goes wrong.
+The error handling function accepts two parameters, `errorType` and `errorDetails`.
+
+`errorType` provides on of these error types:
 
  - `service_error`: The Google Closure Compiler REST API could not process the request.
-   See https://developers.google.com/closure/compiler/docs/api-ref#errors for details.
+   [Check the compiler docs for details.](https://developers.google.com/closure/compiler/docs/api-ref#errors).
  - `request_error`: The HTTP request could not be sent to the API.
  - `server_error`: The HTTP response did not return a `200: Success` status.
     Please note that the API will return a `200: Success` when a `service_error` occurs.
 
 `errorDetails` provides (unstructured) detailed information.
 
+Example:
+
 ```js
-gcc.output(console.log, console.error);
+gcc.output('/path/to/compiled.js', function(errorType, errorDetails) {
+    // Error handling code
+});
 
 gcc.compile(function(compiledStr) {
     // Compiled string handling code
@@ -175,12 +191,6 @@ gcc.compilePassJson(function(json) {
 }, function(errorType, errorDetails) {
     // Error handling code
 };
-```
-
-Prepend the compiled source with a header:
-
-```js
-gcc.header('// This file was compiled using Google Closure Compiler\n');
 ```
 
 ## Custom logging
@@ -203,6 +213,7 @@ gcc.console.error = function() {
 
 ## Update history
 
+ * 2014-03-06: v0.2.5 Provider better error handling functionality documentation
  * 2014-03-06: v0.2.4 Provider better error handling functionality
  * 2013-12-01: v0.2.3 Consistency in error/warning logging
  * 2013-08-08: v0.2.0 Add tests, travis, allow overwriting console
