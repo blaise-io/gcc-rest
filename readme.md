@@ -127,14 +127,14 @@ You may also pass the compiled source to a callback function. The compiled sourc
 Use a callback function by supplying a function reference:
 
 ```js
-gcc.compile(console.log);
+gcc.compile(console.log, console.error);
 ```
 
 Or an anonymous function:
 
 ```js
-gcc.compile(function(compiled) {
-    require('fs').writeFile('path/to/myfile.js', compiled);
+gcc.compile(function(compiledStr) {
+    require('fs').writeFile('path/to/myfile.js', compiledStr);
 });
 ```
 
@@ -146,6 +146,35 @@ gcc.compilePassJson(function(json) {
     // json contains objects like compiledCode, errors, warnings, statistics
     // see output_format > json at https://developers.google.com/closure/compiler/docs/api-ref
 });
+```
+
+Handle errors by supplying an error handling function as the second argument.
+The error handling function has two parameters, `errorType` and `errorDetails`.
+
+Possible `errorType`'s:
+
+ - `service_error`: The Google Closure Compiler REST API could not process the request.
+   See https://developers.google.com/closure/compiler/docs/api-ref#errors for details.
+ - `request_error`: The HTTP request could not be sent to the API.
+ - `server_error`: The HTTP response did not return a `200: Success` status.
+    Please note that the API will return a `200: Success` when a `service_error` occurs.
+
+`errorDetails` provides (unstructured) detailed information.
+
+```js
+gcc.output(console.log, console.error);
+
+gcc.compile(function(compiledStr) {
+    // Compiled string handling code
+}, function(errorType, errorDetails) {
+    // Error handling code
+});
+
+gcc.compilePassJson(function(json) {
+    // Json handling code
+}, function(errorType, errorDetails) {
+    // Error handling code
+};
 ```
 
 Prepend the compiled source with a header:
@@ -174,6 +203,7 @@ gcc.console.error = function() {
 
 ## Update history
 
+ * 2014-03-06: v0.2.4 Provider better error handling functionality
  * 2013-12-01: v0.2.3 Consistency in error/warning logging
  * 2013-08-08: v0.2.0 Add tests, travis, allow overwriting console
  * 2013-04-07: v0.1.6 Allow chaining after the `addDir` method
