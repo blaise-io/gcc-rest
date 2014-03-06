@@ -151,27 +151,33 @@ GccRest.prototype = {
     /**
      * Compile source and write the output to a file.
      * @param {string} file
+     * @param {Function=} errCallback
      */
-    output: function(file) {
+    output: function(file, errCallback) {
         this.file = file;
+        this._errCallback = errCallback || function(){};
         this._compileRequest(this._reqParam);
     },
 
     /**
      * Compile source and pass the output to a callback function.
-     * @param {Function} callback
+     * @param {Function=} callback
+     * @param {Function=} errCallback
      */
-    compile: function(callback) {
+    compile: function(callback, errCallback) {
         this.callback = callback;
+        this._errCallback = errCallback || function(){};
         this._compileRequest(this._reqParam);
     },
 
     /**
      * Compile source and pass the Json output to a callback function.
-     * @param {Function} callback
+     * @param {Function=} callback
+     * @param {Function=} errCallback
      */
-    compilePassJson: function(callback) {
+    compilePassJson: function(callback, errCallback) {
         this._passJson = true;
+        this._errCallback = errCallback || function(){};
         this.compile(callback);
     },
 
@@ -188,7 +194,8 @@ GccRest.prototype = {
         request = http.request(this._closureEndpoint, this._handleResponse.bind(this));
         request.on('error', function(e) {
             this.console.error('Request error', e);
-        });
+            this._errCallback('http_request_error', e);
+        }.bind(this));
         request.end(data);
 
         // For ease of use, GccRest exports an instance. Node.js caches exports.
@@ -238,8 +245,8 @@ GccRest.prototype = {
      * @private
      */
     _handleOutput: function(json) {
-        if (!json.compiledCode) {
-            this.console.error('No compiled code to output!');
+        if (json.serverErrors) {
+            this._handleNoCompiledCode(json.serverErrors);
         } else {
             json.compiledCode = this._header + json.compiledCode;
 
@@ -258,6 +265,18 @@ GccRest.prototype = {
     },
 
     /**
+     * @param {Array.<Object>} errors
+     * @private
+     */
+    _handleNoCompiledCode: function(errors) {
+        for (var i = 0, m = errors.length; i < m; i++) {
+            var error = 'Error ' + errors[i].code + ': ' + errors[i].error;
+            this.console.error(error);
+        }
+        this._errCallback('service_error', errors);
+    },
+
+    /**
      * Handle a failed compile request response.
      * @param {ServerResponse} response
      * @private
@@ -269,6 +288,7 @@ GccRest.prototype = {
         response.on('data', function(chunk) {
             this.console.info('Body', chunk);
         }.bind(this));
+        this._errCallback('server_error', response);
     },
 
     /**

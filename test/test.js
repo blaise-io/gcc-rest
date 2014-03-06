@@ -148,6 +148,9 @@ describe('gcc-rest', function() {
             gcc.compile(function(compiled) {
                 output = compiled;
                 done();
+            }, function(errorType) {
+                assert(null, errorType);
+                done();
             });
         });
 
@@ -157,6 +160,8 @@ describe('gcc-rest', function() {
             });
         });
 
+        // Cannot test Google Closure Compiler service too extensively,
+        // as the API has a quota.
         describe('gcc.compile', function() {
             it('Compiles', function() {
                 assert(output.match('foo'));
@@ -178,7 +183,10 @@ describe('gcc-rest', function() {
                         done();
                     });
                 };
-                gcc.output(file);
+                gcc.output(file, function(errorType) {
+                    assert(null, errorType);
+                    done();
+                });
             });
         });
 
